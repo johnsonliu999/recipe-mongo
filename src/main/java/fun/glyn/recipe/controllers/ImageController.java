@@ -3,7 +3,7 @@ package fun.glyn.recipe.controllers;
 import fun.glyn.recipe.commands.RecipeCommand;
 import fun.glyn.recipe.services.ImageService;
 import fun.glyn.recipe.services.RecipeService;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
+// import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import sun.nio.ch.IOUtil;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
@@ -38,7 +37,7 @@ public class ImageController {
     @PostMapping("recipe/{id}/image")
     public String handleImagePost(@PathVariable String id,
                                   @RequestParam("imageFile") MultipartFile file) {
-        imageService.saveImageFile(id, file);
+        imageService.saveImageFile(id, file).block();
 
         return "redirect:/recipe/" + id + "/show";
     }
@@ -56,7 +55,7 @@ public class ImageController {
 
             response.setContentType("image/jpeg");
             InputStream is = new ByteArrayInputStream(bytes);
-            IOUtils.copy(is, response.getOutputStream());
+//            IOUtils.copy(is, response.getOutputStream());
         }
 
     }

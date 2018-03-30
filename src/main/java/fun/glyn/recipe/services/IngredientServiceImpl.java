@@ -46,7 +46,6 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    @Transactional
     public Mono<IngredientCommand> saveIngredientCommand(IngredientCommand command) {
         Recipe recipe = recipeReactiveRepository.findById(command.getRecipeId()).block();
 
@@ -92,22 +91,24 @@ public class IngredientServiceImpl implements IngredientService {
 
         Recipe recipe = recipeReactiveRepository.findById(recipeId).block();
 
+        if (recipe != null) {
 
-        Optional<Ingredient> ingredientOptional = recipe.getIngredients().stream()
-                .filter(ingredient -> ingredient.getId().equals(id))
-                .findFirst();
+            Optional<Ingredient> ingredientOptional = recipe.getIngredients().stream()
+                    .filter(ingredient -> ingredient.getId().equals(id))
+                    .findFirst();
 
-        if (!ingredientOptional.isPresent()) {
-            log.debug("ingredient not exist");
-            return Mono.empty();
+            if (!ingredientOptional.isPresent()) {
+                log.debug("ingredient not exist");
+                return Mono.empty();
+            }
+
+            Ingredient ingredient = ingredientOptional.get();
+
+            // ingredient.setRecipe(null);
+            recipe.getIngredients().remove(ingredient);
+
+            recipeReactiveRepository.save(recipe).block();
         }
-
-        Ingredient ingredient = ingredientOptional.get();
-
-        // ingredient.setRecipe(null);
-        recipe.getIngredients().remove(ingredient);
-
-        recipeReactiveRepository.save(recipe).block();
 
         return Mono.empty();
     }
