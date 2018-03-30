@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe Home</title>
+    <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <script src="/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<!-- /*@thymesVar id="recipes" type="java.util.List" */ -->
+<!-- /*@thymesVar id="recipe" type="fun.glyn.recipe.domain.Recipe"*/ -->
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header bg-primary text-light">
+                    <h1 class="card-title">My Recipes!</h1>
+                </div>
+
+                <div class="card-body">
+                    <div class="table-responsive" th:if="${not #lists.isEmpty(recipes)}">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Description</th>
+                                    <th>Cook Time</th>
+                                    <th>Prepare Time</th>
+                                    <th>Servings</th>
+                                    <th>View</th>
+                                    <th>Update</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tr th:each="recipe : ${recipes}">
+                                <td th:text="${recipe.getId()}"></td>
+                                <td th:text="${recipe.getDescription()}"></td>
+                                <td th:text="${recipe.getCookTime()}"></td>
+                                <td th:text="${recipe.getPrepTime()}"></td>
+                                <td th:text="${recipe.getServings()}"></td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.getId() + '/show'}}">View</a></td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.getId() + '/update'}}">Update</a></td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.getId() + '/delete'}}">Delete</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe Home</title>
+    <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css}" />
+    <script src="/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <!--/*@thymesVar id="ingredient" type="fun.glyn.recipe.commands.IngredientCommand"*/-->
+            <form  th:object="${ingredient}" th:action="@{'/recipe/' + ${ingredient.getRecipeId()} + '/ingredients'} " method="post">
+                <input type="hidden" th:field="*{id}"/>
+                <div class="card">
+                    <div class="card-header bg-primary text-light">
+                        <h1 class="card-title">Edit Ingredient Information</h1>
+                    </div>
+                    <div class="card-body">
+
+
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label>Description:</label>
+                                <input type="text" class="form-control" th:field="*{description}"/>
+                            </div>
+
+                            <div class="col-md-3 form-group">
+                                <label>Amount:</label>
+                                <input type="number" class="form-control" th:field="*{amount}"/>
+                            </div>
+
+                            <div class="col-md-3 form-group">
+                                <label>UOM:</label>
+                                <!--/*@thymesVar id="uomList" type="java.util.List<fun.glyn.recipe.commands.UnitOfMeasureCommand>"*/-->
+                                <select class="form-control" name="uom.id">
+                                    <option th:each="uomEach : ${uomList}"
+                                            th:value="${uomEach.id}"
+                                            th:selected="${uomEach.getId().equals(ingredient.uom.getId())}"
+                                            th:text="${uomEach.description}">Each</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
